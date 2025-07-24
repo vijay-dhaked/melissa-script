@@ -12,7 +12,7 @@ db = DBHelperClass()
 
 def read_csv():
     all_addresses = []
-    with open('GET_MELISSA.csv', mode='r', newline='') as file:
+    with open('GET_MELISSA_2.csv', mode='r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
             #skip first row
