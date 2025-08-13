@@ -12,10 +12,9 @@ db = DBHelperClass()
 
 def read_csv():
     all_addresses = []
-    with open('GET_MELISSA_2.csv', mode='r', newline='') as file:
+    with open('Melissa_Dan.csv', mode='r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
-            #skip first row
             if reader.line_num == 1:
                 continue
             all_addresses.append(row)
@@ -59,4 +58,3 @@ if __name__ == "__main__":
             
         for t in threads:
             t.join()
-        
