@@ -12,7 +12,7 @@ db = DBHelperClass()
 
 def read_csv():
     all_addresses = []
-    with open('Melissa_Dan.csv', mode='r', newline='') as file:
+    with open('Pull_Melissa_Corona.csv', mode='r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
             if reader.line_num == 1:
@@ -22,13 +22,14 @@ def read_csv():
         print("total rows", len(list(reader)))
         return all_addresses
 
-def get_melissa_data(address, original_data):
+def get_melissa_data(address, original_data, thread_id, start_index):
     url = f"https://property.melissadata.net/v4/WEB/LookupProperty?id={config.MELISSA_KEY}&t={random.randint(1000000000, 9999999999)}&format=JSON&ff={address}&cols=GrpAll"
 
     payload = {}
     headers = {}
-
+    print("getting data", thread_id, start_index, url)
     response = requests.request("GET", url, headers=headers, data=payload)
+    print("got data", thread_id, start_index)
 
     if response.status_code == 200:
         data= json.loads(response.text)
@@ -48,13 +49,16 @@ def get_melissa_data(address, original_data):
 if __name__ == "__main__":
     all_addresses = read_csv()
     # use threading , use 50 threads
-    for i in range(0, len(all_addresses), 50):
+    for i in range(3728, len(all_addresses), 10):
         threads = []
-        for address in all_addresses[i:i+50]:
-            print("i---", i)
-            t = threading.Thread(target=get_melissa_data, args=(f"{address[1]}, {address[2]}, {address[3]} {address[4]}", address))
+        j = 0
+        for address in all_addresses[i:i+10]:
+            j += 1
+            t = threading.Thread(target=get_melissa_data, args=(f"{address[1]}, {address[2]}, {address[3]} {address[4]}", address, j, i))
             threads.append(t)
             t.start()
+            # get_melissa_data(f"{address[1]}, {address[2]}, {address[3]} {address[4]}", address, j, i)
             
         for t in threads:
             t.join()
+            
