@@ -12,7 +12,7 @@ db = DBHelperClass()
 
 def read_csv():
     all_addresses = []
-    with open('Pull_Melissa_Corona.csv', mode='r', newline='') as file:
+    with open('Get_Melissa_Santa_Fe.csv', mode='r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
             if reader.line_num == 1:
@@ -29,7 +29,6 @@ def get_melissa_data(address, original_data, thread_id, start_index):
     headers = {}
     print("getting data", thread_id, start_index, url)
     response = requests.request("GET", url, headers=headers, data=payload)
-    print("got data", thread_id, start_index)
 
     if response.status_code == 200:
         data= json.loads(response.text)
@@ -45,14 +44,14 @@ def get_melissa_data(address, original_data, thread_id, start_index):
         db.insert_one_record("melissa", final_data)
 
 
-
+#limit 200 per minute
 if __name__ == "__main__":
     all_addresses = read_csv()
     # use threading , use 50 threads
-    for i in range(3728, len(all_addresses), 10):
+    for i in range(0, len(all_addresses), 50):
         threads = []
         j = 0
-        for address in all_addresses[i:i+10]:
+        for address in all_addresses[i:i+50]:
             j += 1
             t = threading.Thread(target=get_melissa_data, args=(f"{address[1]}, {address[2]}, {address[3]} {address[4]}", address, j, i))
             threads.append(t)
@@ -61,4 +60,3 @@ if __name__ == "__main__":
             
         for t in threads:
             t.join()
-            
