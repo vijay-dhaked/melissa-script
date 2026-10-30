@@ -12,7 +12,7 @@ from db import DBHelperClass
 
 db = DBHelperClass()
 # ---------------- CONFIG ----------------
-CSV_FILE = "GetMelissa2.csv"
+CSV_FILE = config.CSV_FILE
 BATCH_SIZE = 50        # max concurrent threads (safe for Melissa)
 REQUEST_TIMEOUT = 10   # seconds
 SLEEP_BETWEEN_BATCHES = 1  # seconds

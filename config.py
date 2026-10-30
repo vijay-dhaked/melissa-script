@@ -4,3 +4,4 @@ env_vars = dotenv_values(".env")
 
 DB_URI = env_vars.get("DB_URI")
 MELISSA_KEY = env_vars.get("MELISSA_KEY")
+CSV_FILE = env_vars.get("CSV_FILE")
